@@ -24,11 +24,16 @@ def save_data(data):
 
 def load_config():
     if not os.path.exists(CONFIG_FILE):
-        return {"token": "TON_TOKEN_ICI", "admin_ids": [], "currency_name": "💰 Pièces"}
+        return {"token": "", "admin_ids": [], "currency_name": "💰 Pièces"}
     with open(CONFIG_FILE, "r") as f:
         return json.load(f)
 
 config = load_config()
+# Priorité à la variable d'environnement Railway
+if os.environ.get("TOKEN"):
+    config["token"] = os.environ.get("TOKEN")
+if os.environ.get("ADMIN_IDS"):
+    config["admin_ids"] = [int(x) for x in os.environ.get("ADMIN_IDS").split(",")]
 
 # ─────────────────────────────────────────
 #  BOT SETUP
